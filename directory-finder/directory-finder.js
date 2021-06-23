@@ -132,7 +132,7 @@ The separator is being used ALSO to parse the other files, so you want to have a
 
 --proxy  You can pass an url or a filename instead where each request will be proxied trought one of the proxies listed.
 
---code   Patter to return files. !404 for print all urls that dosn't return a 404 status code 
+--code   Pattern to return files. !404 for print all urls that dosn't return a 404 status code 
 
 Another example:
 node directory-finder.js -u https://google.com -f dev.txt -a 'agents.txt' -r --headers 'X-Requested-With:XMLHttpRequest,Referrer:http://example.com' --code '!404'

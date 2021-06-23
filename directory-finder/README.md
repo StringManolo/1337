@@ -51,7 +51,7 @@ You can pass an url or a filename instead where each request will be proxied tro
 > Not implemented yet. 
   
 ##### --code
-Patter to return files. !404 for print all urls that dosn't return a 404 status code  
+Pattern to return files. !404 for print all urls that dosn't return a 404 status code  
   
 Another example:
 ```
