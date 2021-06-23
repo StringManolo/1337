@@ -47,7 +47,8 @@ You can pass a list of headers and directives delimited by : and , Example: --he
 The user agents are chosed randomly  
   
 ##### --proxy
-You can pass an url or a filename instead where each request will be proxied trought one of the proxies listed.  
+You can pass an url or a filename instead where each request will be proxied trought one of the proxies listed.
+> Not implemented yet. 
   
 ##### --code
 Patter to return files. !404 for print all urls that dosn't return a 404 status code  
