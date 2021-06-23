@@ -4,7 +4,8 @@ Basic example:
 ```
 node directory-finder.js -f 'dev.txt' -u 'https://www.google.com'
 ```
-
+  
+Options:
 ```
 -a, --user-agent    String or file
 -m, --method        String
