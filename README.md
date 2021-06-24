@@ -32,4 +32,9 @@ Find DOM sinks in source code by url. Helps to find DOM XSS.
 > node  
 > node-fetch  
 
-
+#### [reflected-xss-exploit-generator](https://github.com/StringManolo/1337/tree/master/reflected-xss-exploit-generator)
+![reflected-xss-exploit-generator](https://github.com/StringManolo/1337/blob/master/resources/reflected-xss-exploit-generator.png)
+Exploit reflected XSS automatically or generate exploit, payload and server code in Node or PHP.
+> node  
+> curl  
+> php
