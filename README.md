@@ -25,3 +25,11 @@ Find target information using google dorks.
 > node  
 > curl  
 > lynx 
+
+#### [dom-sink-finder](https://github.com/StringManolo/1337/tree/master/dom-sink-finder)
+![dom-sink-finder](https://github.com/StringManolo/1337/blob/master/resources/dom-sink-finder.png)
+Find DOM sinks in source code by url. Helps to find DOM XSS.
+> node  
+> node-fetch  
+
+
