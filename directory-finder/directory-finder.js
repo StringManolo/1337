@@ -89,6 +89,11 @@ for (const i in scriptArgs) {
 
     */
 
+    case "-v":
+    case "--verbose":
+      cliArgs.v = true;
+    break;
+
     case "-h":
     case "--help":
       cliArgs.help = true;
@@ -110,6 +115,7 @@ node directory-finder.js -f 'dev.txt' -u 'https://www.google.com'
 -r, --randomize
 -p, --proxy         String or file
 -c, --code          String
+-v, --verbose
 -h, --help          
 
 Recommended:
@@ -134,12 +140,16 @@ The separator is being used ALSO to parse the other files, so you want to have a
 
 --code   Pattern to return files. !404 for print all urls that dosn't return a 404 status code 
 
+--verbose   Print a lot of info.
+
 Another example:
 node directory-finder.js -u https://google.com -f dev.txt -a 'agents.txt' -r --headers 'X-Requested-With:XMLHttpRequest,Referrer:http://example.com' --code '!404'
 
 `);
   process.exit(0);
 }
+
+const verbose = text => cliArgs.v && console.log(` + ${text}`);
 
 if (!cliArgs.url) {
   console.log("Missing argument --url https://example.com");
@@ -185,8 +195,11 @@ if (!cliArgs.code) {
 
 const GET = async (url, requestOptions) => {
   try {
+    verbose(`Sending request to ${url} ...`);
     const response = await fetch(url, requestOptions);
 //console.log(`Response status ${response.status}`);
+    
+    verbose(`${url} - ${response.status}`);
     switch (response.status) {
       case 200:
         if (cliArgs.code == 200 || cliArgs.code == "!404") {
@@ -265,5 +278,5 @@ const scan = async () => {
   }
 }
 
+verbose(`Number of directories (${cliArgs.file.length})`);
 scan();
-
