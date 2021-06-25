@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import extractUrlsFromSource from "./modules/extract-urls-from-source.mjs";
 import extractParametersFromUrl from "./modules/extract-parameters-from-url.mjs";
+import xssParameterInjection from "./modules/xss-parameter-injection.mjs";
 
 const quit = (msg, errorCode=0) => {
   console.log(msg);
@@ -41,4 +42,6 @@ for (let i in urls) {
 //console.log(params);
 for (let i in listOfUrlVectors) {
   console.log("\n\n" + listOfUrlVectors[i]);
+  const injection = xssParameterInjection(listOfUrlVectors[i], "{{ PAYLOAD }}", "<svg/onload=alert()>");
+  console.log(injection);
 }

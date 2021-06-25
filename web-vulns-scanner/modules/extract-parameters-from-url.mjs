@@ -14,7 +14,7 @@ const extractParametersFromUrl = Url => {
     if (paramValue == null) {
       paramValue = "";
     }
-    
+   
     const pattern = new RegExp("\\b(" +paramName+"=).*?(&|#|$)");
     if (url.search(pattern) >= 0) {
       return url.replace(pattern, "$1" + paramValue + "$2");
@@ -23,11 +23,11 @@ const extractParametersFromUrl = Url => {
     return url + (url.indexOf("?") > 0 ? "&" : "?") + paramName + "=" + paramValue;
   }
   /* */
-	
 
   let targetUrl = parsed.href;
   for (let i in arrayQueries) {
     targetUrl = replaceParamValue(targetUrl, arrayQueries[i], "{{ PAYLOAD }}");
+    // targetUrl = addCounterToPayload(targetUrl);
   }
 
 
