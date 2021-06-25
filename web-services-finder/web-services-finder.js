@@ -271,7 +271,7 @@ for(let i = 0; i < domains.length; ++i) {
   if (!/\*/g.test(domains[i]) && !/\@/g.test(domains[i])) {
     try {
       scanDomain({ domain: domains[i], range: cli.range })
-    } catch() {}
+    } catch(err) {}
   }
 }
 
