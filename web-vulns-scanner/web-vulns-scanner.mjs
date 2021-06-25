@@ -1,7 +1,12 @@
 import fetch from "node-fetch";
+
+/* TODO: Include imports in a single module exporting all the functions */
 import extractUrlsFromSource from "./modules/extract-urls-from-source.mjs";
 import extractParametersFromUrl from "./modules/extract-parameters-from-url.mjs";
 import xssParameterInjection from "./modules/xss-parameter-injection.mjs";
+import xssTestInjection from "./modules/xss-test-injection.mjs";
+import openRedir from "./modules/open-redir.mjs";
+import openRedirTest from "./modules/open-redir-test.mjs";
 
 const quit = (msg, errorCode=0) => {
   console.log(msg);
@@ -25,7 +30,9 @@ for(let i in scriptArgs) {
   }
 }
 
-const response = await fetch(cli.target);
+const requestOptions = { headers: {} };
+requestOptions.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36";
+const response = await fetch(cli.target, requestOptions);
 const body = await response.text();
 
 const urls = extractUrlsFromSource(body);
@@ -42,6 +49,16 @@ for (let i in urls) {
 //console.log(params);
 for (let i in listOfUrlVectors) {
   console.log("\n\n" + listOfUrlVectors[i]);
-  const injection = xssParameterInjection(listOfUrlVectors[i], "{{ PAYLOAD }}", "<svg/onload=alert()>");
-  console.log(injection);
+
+  const payload = "{{ PAYLOAD }}";
+  const injection1 = xssParameterInjection(listOfUrlVectors[i], payload, "\"><img onerror=confirm('web-vulns-scanner') src=>");
+  console.log(injection1);
+
+  const injected = await xssTestInjection(injection1, "web-vulns-scanner");
+  console.log(injected);
+
+  const openRedirUrl = openRedir(listOfUrlVectors[i], payload, "//example.com");
+  console.log(openRedirUrl);
+  const redirect = await openRedirTest(openRedirUrl);
+  console.log(`Open Redir: ${redirect}`);
 }
