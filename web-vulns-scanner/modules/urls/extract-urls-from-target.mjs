@@ -8,7 +8,7 @@ const extractUrlsFromTarget = async target => {
   requestOptions.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36";
   console.log(`Setting user agent (${requestOptions.headers["User-Agent"]}) to use in subsequent node-fetch requests`);
   console.log(`Sending request...`);
-  let response;
+  let response = {};
   try {
     response = await fetch(target, requestOptions);
   } catch(err) {
@@ -20,6 +20,7 @@ const extractUrlsFromTarget = async target => {
       }
       quit(`Your target url ${target} is not an absolute/valid url.${extraInfo}`, 1);
     }
+    response.text = () => "";
   }
   console.log(`Response recived, parsing response from server...`);
   const body = await response.text();

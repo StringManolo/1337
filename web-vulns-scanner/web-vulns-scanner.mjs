@@ -23,6 +23,34 @@ for (let i in userSelected.target) {
 urlsExtractedFromTargets = multidimensionalArrayToUnidimensional(urlsExtractedFromTargets);
 urlsExtractedFromTargets = removeArrayDuplicates(urlsExtractedFromTargets);
 
+
+if (userSelected.recursiveUrlExtraction) {
+  console.log(`Extracting recursively ${userSelected.recursiveUrlExtraction} times from a total of ${urlsExtractedFromTargets.length} diferent urls`);
+  let recursiveUrls = [];
+  let lastPool;
+  for (let i = 0; i < userSelected.recursiveUrlExtraction; ++i) {
+    let recursiveUrlsExtractedFromTargets = [];
+    let listOfUrls;
+    if (i == 0) {
+      listOfUrls = urlsExtractedFromTargets;
+    } else {
+      listOfUrls = lastPool;
+    }
+    for (let j in listOfUrls) {
+      const urlsExtractedFromTarget = await extractUrlsFromTarget(listOfUrls[j]);
+      recursiveUrlsExtractedFromTargets.push(urlsExtractedFromTarget);
+    }
+    recursiveUrlsExtractedFromTargets = multidimensionalArrayToUnidimensional(recursiveUrlsExtractedFromTargets);
+    recursiveUrlsExtractedFromTargets = removeArrayDuplicates(recursiveUrlsExtractedFromTargets);
+    recursiveUrls.push(recursiveUrlsExtractedFromTargets);
+    lastPool = recursiveUrlsExtractedFromTargets;
+  }
+  recursiveUrls = multidimensionalArrayToUnidimensional(recursiveUrls);
+  recursiveUrls = removeArrayDuplicates(recursiveUrls);
+  urlsExtractedFromTargets = recursiveUrls;
+  console.log(`A total of ${urlsExtractedFromTargets.length} has been extracted`);
+}
+
 const urlVectors = prepareUrlsForInjection(urlsExtractedFromTargets);
 
 if (userSelected.xss) {

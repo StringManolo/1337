@@ -49,7 +49,7 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
       break;
 
       case "--recursive-url-extraction":
-        cli.recursiveUrlExtraction = next;
+        cli.recursiveUrlExtraction = +next;
       break;
 
       case "--show-extracted-urls":
