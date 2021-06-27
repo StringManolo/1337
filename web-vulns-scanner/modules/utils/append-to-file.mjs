@@ -1,3 +1,5 @@
+import fs from "fs";
+
 const appendToFile = (filename, content) => {
   const open = (filename, mode) => {
     const fd = {};
