@@ -51,7 +51,11 @@ if (userSelected.recursiveUrlExtraction) {
   console.log(`A total of ${urlsExtractedFromTargets.length} has been extracted`);
 }
 
-const urlVectors = prepareUrlsForInjection(urlsExtractedFromTargets);
+let urlVectors;
+if (userSelected.filter) {
+  urlVectors = filterUrls(urlsExtractedFromTargets, userSelected.filter);
+}
+urlVectors = prepareUrlsForInjection(urlsExtractedFromTargets);
 
 if (userSelected.xss) {
   await xssScanner(urlVectors);

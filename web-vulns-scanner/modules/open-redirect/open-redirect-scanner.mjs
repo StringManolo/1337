@@ -1,5 +1,6 @@
 import { openRedir } from "./open-redirect.mjs";
 import { openRedirTest } from "./open-redirect.mjs";
+import { appendToFile } from "../utils/utils.mjs";
 
 const openRedirectScanner = async listOfUrlVectors => {
   console.log("Starting Open Rediect scanner...");
@@ -12,6 +13,10 @@ const openRedirectScanner = async listOfUrlVectors => {
     const redirect = await openRedirTest(openRedirUrl);
     console.log(`Injection test -> ${redirect}`);
     if (redirect) {
+      appendToFile("open-redirect-scanner-results.txt", `${openRedirUrl}
+
+
+`);
       console.log(`
 Open Redirect Result:
 FOUND -> ${openRedirUrl}

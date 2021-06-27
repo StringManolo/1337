@@ -1,5 +1,6 @@
 import { xssParameterInjection } from "./xss.mjs";
 import { xssTestInjection } from "./xss.mjs";
+import { appendToFile } from "../utils/utils.mjs";
 
 const xssScanner = async listOfUrlVectors => {
   console.log("Starting XSS scanner...");
@@ -12,6 +13,12 @@ const xssScanner = async listOfUrlVectors => {
     const injected = await xssTestInjection(injection, "\\\<img onerror\\\=confirm\\\(\\\'web");
     console.log(`Injection test -> ${injected}`);
     if (injected) {
+      appendToFile("xss-scanner-results.txt", `Injected: ${injected}
+
+${injection}
+
+
+`);
       console.log(`
 XSS Result:
 Injected: ${injected}
