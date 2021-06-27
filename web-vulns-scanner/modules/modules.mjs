@@ -22,7 +22,7 @@ export {
   multidimensionalArrayToUnidimensional,
   removeArrayDuplicates,
   writeToFile,
-  appendToFile
+  appendToFile,
 
   //urls modules
   extractParametersFromUrl,
