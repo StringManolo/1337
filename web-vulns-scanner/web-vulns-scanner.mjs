@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import fs from "fs";
 
 /* TODO: Include imports in a single module exporting all the functions */
 import extractUrlsFromSource from "./modules/extract-urls-from-source.mjs";
@@ -7,6 +8,15 @@ import xssParameterInjection from "./modules/xss-parameter-injection.mjs";
 import xssTestInjection from "./modules/xss-test-injection.mjs";
 import openRedir from "./modules/open-redir.mjs";
 import openRedirTest from "./modules/open-redir-test.mjs";
+
+const loadFile = filename => {
+  try {
+    filename = fs.readFileSync(filename, { encoding: "utf-8" })
+  } catch(e) {
+    filename = null;
+  }
+  return filename;
+};
 
 const quit = (msg, errorCode=0) => {
   console.log(msg);
@@ -26,7 +36,12 @@ for(let i in scriptArgs) {
   switch(scriptArgs[i]) {
     case "-t":
     case "--target":
-      cli.target = next;
+      cli.target = loadFile(next);
+      cli.targetFile = true;
+      if (!cli.target) {
+        cli.target = next;
+	cli.targetFile = false;
+      }
     break;
 
     case "-x":
@@ -94,7 +109,7 @@ const extractUrls = async target => {
   requestOptions.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36";
   verbose(`Setting user agent (${requestOptions.headers["User-Agent"]}) to use in subsequent node-fetch requests`);
   verbose(`Sending request...`);
-  const response = await fetch(target, requestOptions);
+  let response = await fetch(target, requestOptions);
   verbose(`Response recived, parsing response from server...`);
   const body = await response.text();
   verbose(`Request body extracted as ${body.substr(0,20)}...`);
@@ -195,25 +210,64 @@ FOUND -> ${openRedirUrl}
 
 
 
-let [urls, originalUrls] = await extractUrls(cli.target);
+let urls = [];
+let originalUrls = [];
+
+if (cli.targetFile) {
+  verbose("Target detected as a file,.extracting urls...");
+  const targets = cli.target.split("\n");
+  targets.pop();
+  verbose(`${targets.length} urls detected in file`);
+  for (let i in targets) {
+    let auxUrls = "";
+    let auxOriginalUrls = "";
+    if(targets[i]) {
+      try {
+        [auxUrls, auxOriginalUrls] = await extractUrls(targets[i]);
+      } catch(err) {}
+
+      urls.push(auxUrls);
+      originalUrls.push(auxOriginalUrls);
+    }
+  }
+  urls = [].concat(...urls);
+  urls = [...new Set(urls)];
+  originalUrls = [].concat(...originalUrls);
+  originalUrls = [...new Set(originalUrls)];
+} else {
+  try {
+    [urls, originalUrls] = await extractUrls(cli.target);
+  } catch(err) {}
+}
 
 let endUrls = originalUrls;
+console.log("STARTING URLS FOR RECURSIVE: " + endUrls.length);
+console.log(endUrls);
+endUrls = filterUrls(endUrls, cli.filter);
+console.log("STARTING URLS FOR RECURSIVE FILTERED: " + endUrls.length);
+
 
 console.log(`Found ${urls.length}`);
 if (cli.recursiveUrlExtraction) {
   for (let i = 0; i < cli.recursiveUrlExtraction; ++i) {
     for (let j in originalUrls) {
 //console.log(`Extracting from ${originalUrls[j]}`);
-      const aux = await extractUrls(originalUrls[j]);
-      endUrls.push(...aux);
+      try {
+        const aux = await extractUrls(originalUrls[j]);
+        endUrls.push(...aux);
+      } catch(err) {}
     }
   }
 }
 
 
-endUrls = [].concat(...urls);
-endUrls = [...new Set(urls)];
+if (!cli.targetFile) {
+  endUrls = [].concat(...urls);
+  endUrls = [...new Set(urls)];
+}
 endUrls = filterUrls(urls, cli.filter);
+console.log(`${endUrls.length} ARE GOING TO BE USED...`);
+
 
 let urlVectors = [];
 try {
