@@ -1,5 +1,6 @@
 import { loadFile } from "./utils.mjs";
 import { quit } from "./utils.mjs";
+import { extractUrlsFromFile } from "../urls/urls.mjs";
 
 const processArguments = () => {
   const cli = {};
@@ -9,11 +10,22 @@ const processArguments = () => {
     switch(scriptArgs[i]) {
       case "-t":
       case "--target":
-        cli.target = loadFile(next);
-        cli.targetFile = true;
+        cli.target = extractUrlsFromFile(next);
+        cli.targetIsFile = true;
         if (!cli.target) {
-          cli.target = next;
-          cli.targetFile = false;
+          cli.target = [];
+	  cli.target.push(next);
+          cli.targetIsFile = false;
+        }
+
+	if (!next) {
+          quit(`Error: You forgot to provide a target after the --target/-t argument.
+
+Examples of usage: --target https://example.com
+--target './listOfDomains/google.txt'
+
+Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redirect
+`);
         }
       break;
 
@@ -75,6 +87,17 @@ node web-vulns-scanner.mjs --show-extracted-urls -t https://google.es --recursiv
 
     }
   }
+
+  if (!cli.target) {
+    quit(`Error: You forgot to provide a target.
+
+Examples of usage: --target https://example.com
+--target './listOfDomains/google.txt'
+
+Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redirect
+`);
+  }
+
   return cli;
 }
 
