@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import extractParametersFromUrl from "./extract-parameters-from-url.mjs";
 
 const xssTestInjection = async (url, expected) => {
 
@@ -17,6 +18,7 @@ const xssTestInjection = async (url, expected) => {
     }
   }
 
+  /* TODO: Try POST too */
   return ocurrences.length > 0 ? ocurrences : null;
 }
 
