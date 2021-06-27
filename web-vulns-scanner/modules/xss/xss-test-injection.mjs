@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import extractParametersFromUrl from "./extract-parameters-from-url.mjs";
+import { extractParametersFromUrl } from "../urls/urls.mjs";
 
 const xssTestInjection = async (url, expected) => {
 
