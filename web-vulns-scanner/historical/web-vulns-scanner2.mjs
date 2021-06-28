@@ -1,14 +1,12 @@
 import {
   extractUrlsFromTarget,
-  extractUrlsRecursively,
   prepareUrlsForInjection,
   filterUrls,
   processArguments,
   multidimensionalArrayToUnidimensional,
   removeArrayDuplicates,
   xssScanner,
-  openRedirectScanner,
-  appendToFile
+  openRedirectScanner
 } from "./modules/modules.mjs";
 
 
@@ -25,18 +23,41 @@ for (let i in userSelected.target) {
 urlsExtractedFromTargets = multidimensionalArrayToUnidimensional(urlsExtractedFromTargets);
 urlsExtractedFromTargets = removeArrayDuplicates(urlsExtractedFromTargets);
 
+
 if (userSelected.recursiveUrlExtraction) {
-  urlsExtractedFromTargets = await extractUrlsRecursively(urlsExtractedFromTargets, userSelected.recursiveUrlExtraction);
-  console.log("\n\nDEBUG2\n\n");
+  console.log(`Extracting recursively ${userSelected.recursiveUrlExtraction} times from a total of ${urlsExtractedFromTargets.length} diferent urls`);
+  let recursiveUrls = [];
+  let lastPool;
+  for (let i = 0; i < userSelected.recursiveUrlExtraction; ++i) {
+    let recursiveUrlsExtractedFromTargets = [];
+    let listOfUrls;
+    if (i == 0) {
+      listOfUrls = urlsExtractedFromTargets;
+    } else {
+      listOfUrls = lastPool;
+    }
+    for (let j in listOfUrls) {
+      const urlsExtractedFromTarget = await extractUrlsFromTarget(listOfUrls[j]);
+      recursiveUrlsExtractedFromTargets.push(urlsExtractedFromTarget);
+    }
+    recursiveUrlsExtractedFromTargets = multidimensionalArrayToUnidimensional(recursiveUrlsExtractedFromTargets);
+    recursiveUrlsExtractedFromTargets = removeArrayDuplicates(recursiveUrlsExtractedFromTargets);
+    recursiveUrls.push(recursiveUrlsExtractedFromTargets);
+    lastPool = recursiveUrlsExtractedFromTargets;
+  }
+  recursiveUrls = multidimensionalArrayToUnidimensional(recursiveUrls);
+  recursiveUrls = removeArrayDuplicates(recursiveUrls);
+  urlsExtractedFromTargets = recursiveUrls;
+  console.log(`A total of ${urlsExtractedFromTargets.length} has been extracted`);
 }
 
-let urlVectors = urlsExtractedFromTargets;
+let urlVectors;
 if (userSelected.filter) {
   urlVectors = filterUrls(urlsExtractedFromTargets, userSelected.filter);
 }
 
 if (userSelected.saveUrls) {
-  appendToFile("./output/urls.txt", urlVectors);
+  
 }
 
 urlVectors = prepareUrlsForInjection(urlsExtractedFromTargets);
@@ -47,6 +68,7 @@ if (userSelected.savePreparedUrls) {
   xssOptions.onlyGenerateUrls = true;
   openRedirOptions.onlyGenerateUrls = true;
 }
+
 
 if (userSelected.xss) {
   await xssScanner(urlVectors, xssOptions);

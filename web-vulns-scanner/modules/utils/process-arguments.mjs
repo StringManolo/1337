@@ -60,6 +60,10 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
         cli.filter = next;
       break;
 
+      case "--save-prepared-urls":
+	cli.savePreparedUrls = true;
+      break;
+
       case "-v":
       case "--verbose":
         cli.verbose = true;
@@ -80,6 +84,7 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
   ,--recursive-url-extraction     Deep level
   ,--show-extracted-urls          Show all urls found
   ,--filter-urls                  Only use urls that match a pattern
+  ,--save-prepared-urls           Save the exploit urls to files instead of send requests
 
 example:
 node web-vulns-scanner.mjs --show-extracted-urls -t https://google.es --recursive-url-extraction 1 --filter-urls google --xss --open-redirect
