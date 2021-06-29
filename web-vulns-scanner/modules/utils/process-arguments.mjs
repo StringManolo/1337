@@ -1,5 +1,4 @@
-import { loadFile } from "./utils.mjs";
-import { quit } from "./utils.mjs";
+import { loadFile, quit, echo } from "./utils.mjs";
 import { extractUrlsFromFile } from "../urls/urls.mjs";
 
 const processArguments = () => {
@@ -19,13 +18,14 @@ const processArguments = () => {
         }
 
 	if (!next) {
-          quit(`Error: You forgot to provide a target after the --target/-t argument.
+	  echo(`Error: You forgot to provide a target after the --target/-t argument.
 
 Examples of usage: --target https://example.com
 --target './listOfDomains/google.txt'
 
 Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redirect
-`);
+`, "critical");
+	  quit("", 1);
         }
       break;
 
@@ -69,16 +69,23 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
         cli.verbose = true;
       break;
 
+      case "-d":
+      case "--debug":
+	cli.verbose = true;
+	cli.debug = true;
+      break;
+
       case "--version":
         quit("web-vulns-scanner 1.0.0");
 
       case "-h":
       case "--help":
-        quit(`usage: node web-vulns-scanner.mjs [OPTIONS]
+        echo(`usage: node web-vulns-scanner.mjs [OPTIONS]
 -t,--target                       Full url of target
 -x,--xss                          Scan XSS
 -r,--open-redir                   Scan Open Redirect
--v,--verbose                      Print information about the scanner
+-v,--verbose                      Print more information while scanning
+-d,--debug                        Print all information while scanning
   ,--version                      Print current version
 
   ,--recursive-url-extraction     Deep level
@@ -87,20 +94,21 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
   ,--save-prepared-urls           Save the exploit urls to files instead of send requests
 
 example:
-node web-vulns-scanner.mjs --show-extracted-urls -t https://google.es --recursive-url-extraction 1 --filter-urls google --xss --open-redirect
-`);
+node web-vulns-scanner.mjs --show-extracted-urls -t https://google.es --recursive-url-extraction 1 --filter-urls google --xss --open-redirect --debug`);
+      quit("", 1);
 
     }
   }
 
   if (!cli.target) {
-    quit(`Error: You forgot to provide a target.
+    echo(`You forgot to provide a target.
 
 Examples of usage: --target https://example.com
 --target './listOfDomains/google.txt'
 
 Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redirect
-`);
+`, "critical");
+    quit("", 1);
   }
 
   return cli;

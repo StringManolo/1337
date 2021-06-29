@@ -1,8 +1,8 @@
 import { extractUrlsFromTarget } from "./urls.mjs";
-import { multidimensionalArrayToUnidimensional, removeArrayDuplicates } from "../utils/utils.mjs";
+import { multidimensionalArrayToUnidimensional, removeArrayDuplicates, echo } from "../utils/utils.mjs";
 
 const extractUrlsRecursively = async (urls, deepLevel) => {
-console.log(`Extracting recursively ${deepLevel} times from a total of ${urls.length} diferent urls`);
+  echo(`Extracting recursively ${deepLevel} times from a total of ${urls.length} diferent urls`);
   let recursiveUrls = [];
   let lastPool;
   for (let i = 0; i < deepLevel; ++i) {
@@ -22,7 +22,7 @@ console.log(`Extracting recursively ${deepLevel} times from a total of ${urls.le
   recursiveUrls = multidimensionalArrayToUnidimensional(recursiveUrls);
   recursiveUrls = removeArrayDuplicates(recursiveUrls);
   urls = recursiveUrls;
-  console.log(`A total of ${urls.length} has been extracted`);
+  echo(`A total of ${urls.length} has been extracted`);
   return urls;
 }
 

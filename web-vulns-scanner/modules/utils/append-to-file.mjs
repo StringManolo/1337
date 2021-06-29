@@ -1,6 +1,8 @@
 import fs from "fs";
+import { echo } from "./utils.mjs";
 
 const appendToFile = (filename, content) => {
+  echo(`Appending results to ${filename}`, "verbose");
   const open = (filename, mode) => {
     const fd = {};
     fd.internalFd = fs.openSync(filename, mode);

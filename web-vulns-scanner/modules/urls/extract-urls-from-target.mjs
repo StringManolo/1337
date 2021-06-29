@@ -1,13 +1,13 @@
 import fetch from "node-fetch";
 import { extractUrlsFromSource } from "./urls.mjs";
-import { quit } from "../utils/utils.mjs";
+import { quit, echo } from "../utils/utils.mjs";
 
 const extractUrlsFromTarget = async target => {
-  console.log(`Extracting urls from ${target}...`);
+  echo(`Extracting urls from ${target}...`);
   const requestOptions = { headers: {} };
   requestOptions.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36";
-  console.log(`Setting user agent (${requestOptions.headers["User-Agent"]}) to use in subsequent node-fetch requests`);
-  console.log(`Sending request...`);
+  echo(`Setting user agent (${requestOptions.headers["User-Agent"]}) to use in subsequent node-fetch requests`, "debug");
+  echo(`Sending request...`, "verbose");
   let response = {};
   try {
     response = await fetch(target, requestOptions);
@@ -18,21 +18,24 @@ const extractUrlsFromTarget = async target => {
       if (!foundHttp) {
         extraInfo += "\nDid you forgot to prepend https:// to your target?"
       }
-      quit(`Your target url ${target} is not an absolute/valid url.${extraInfo}`, 1);
+      echo(`Your target url ${target} is not an absolute/valid url.${extraInfo}`, "critical");
+      echo(`The program will try to keep running. The target ${target} will be ignored`, "warning"); 
+      return [ "" ];
+      //quit("", 1);
     }
     response.text = () => "";
   }
-  console.log(`Response recived, parsing response from server...`);
+  echo(`Response recived, parsing response from server...`, "debug");
   const body = await response.text();
-  console.log(`Request body extracted as ${body.substr(0,20)}...`);
+  echo(`Request body extracted as ${body.substr(0,100)}...`, "debug");
 
-  console.log(`Extracting urls from source...`);
+  echo(`Extracting urls from source...`, "verbose");
   let urls = extractUrlsFromSource(body);
 
   const numberOfUrls = urls.length;
-  console.log(`${numberOfUrls} extracted from ${target} source, removing duplicates`);
+  echo(`${numberOfUrls} extracted from ${target} source, removing duplicates`);
   urls = [...new Set(urls)];
-  console.log(`${numberOfUrls - urls.length} duplicates removed`);
+  echo(`${numberOfUrls - urls.length} duplicates removed`, "debug");
   return urls;
 }
 

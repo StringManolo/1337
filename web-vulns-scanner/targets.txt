@@ -1,2 +1,2 @@
-https://www.netlify.com/enterprise/
-https://www.netlify.com
+https://netlify.com
+https://google.es

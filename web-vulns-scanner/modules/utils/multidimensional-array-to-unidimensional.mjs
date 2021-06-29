@@ -1,5 +1,7 @@
+import { echo } from "./utils.mjs";
+
 const multidimensionalArrayToUnidimensional = multiArr => {
-  console.log(`Making unidemensional array FROM: ${JSON.stringify(multiArr)}`);
+  echo(`Making unidemensional array FROM: ${JSON.stringify(multiArr)}`, "debug");
   const containsArray = arr => {
     for (let i in arr) {
       if (Array.isArray(arr[i])) {
@@ -13,7 +15,7 @@ const multidimensionalArrayToUnidimensional = multiArr => {
     multiArr = [].concat(...multiArr);
   }
 
-  console.log(`New Unidimensional Array is ${multiArr}`);
+  echo(`New Unidimensional Array is ${multiArr}`, "debug");
   return multiArr;
 }
 

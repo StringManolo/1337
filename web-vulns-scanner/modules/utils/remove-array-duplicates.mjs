@@ -1,7 +1,9 @@
+import { echo } from "./utils.mjs";
+
 const removeArrayDuplicates = arr => {
   const len = arr.length;
   arr = [...new Set(arr)];
-  console.log(`Removed ${len - arr.length} duplicated entries from the array`);
+  echo(`Removed ${len - arr.length} duplicated entries from the array`, "verbose");
   return arr;
 }
 

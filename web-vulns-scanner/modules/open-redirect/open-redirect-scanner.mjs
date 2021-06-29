@@ -1,33 +1,32 @@
-import { openRedir } from "./open-redirect.mjs";
-import { openRedirTest } from "./open-redirect.mjs";
-import { appendToFile } from "../utils/utils.mjs";
+import { openRedir, openRedirTest } from "./open-redirect.mjs";
+import { appendToFile, echo } from "../utils/utils.mjs";
 
 const openRedirectScanner = async (listOfUrlVectors, options) => {
-  console.log("Starting Open Rediect scanner...");
+  echo("Starting Open Rediect scanner...");
   let generatedUrls = []; 
   for (let i in listOfUrlVectors) {
     const url = listOfUrlVectors[i];
-    console.log("Scanning " + url);
+    echo("Scanning " + url);
     const pattern = "{{ PAYLOAD }}";
     const openRedirUrl = openRedir(url, pattern, "//example.com");
-    console.log(`Injection -> ${openRedirUrl}`);
+    echo(`Injection -> ${openRedirUrl}`, "debug");
     if (options.onlyGenerateUrls) {
       generatedUrls.push(openRedirUrl);
       break;
     }
     const redirect = await openRedirTest(openRedirUrl);
-    console.log(`Injection test -> ${redirect}`);
+    echo(`Injection test -> ${redirect}`, "debug");
     if (redirect) {
       appendToFile("output/results/open-redirect-scanner-results.txt", `${openRedirUrl}
 
 
 `);
-      console.log(`
+      echo(`
 Open Redirect Result:
 FOUND -> ${openRedirUrl}
 
 
-`);
+`, "critical");
     }
   }
   if (options.onlyGenerateUrls) {

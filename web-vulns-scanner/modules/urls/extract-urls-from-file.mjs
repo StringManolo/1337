@@ -1,7 +1,7 @@
-import { loadFile } from "../utils/utils.mjs";
+import { loadFile, echo } from "../utils/utils.mjs";
 
 const extractUrlsFromFile = filename => {
-console.log(`FILENAME: ${filename}`);
+  echo(`Extracting urls from ${filename}`, "debug");
   const contents = loadFile(filename);
   if (contents) {
     let lines = contents.split("\n");

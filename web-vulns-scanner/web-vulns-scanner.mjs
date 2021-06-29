@@ -12,7 +12,7 @@ import {
 } from "./modules/modules.mjs";
 
 
-const userSelected = processArguments();
+global.userSelected = processArguments();
 
 console.log(userSelected.target);
 
@@ -27,7 +27,6 @@ urlsExtractedFromTargets = removeArrayDuplicates(urlsExtractedFromTargets);
 
 if (userSelected.recursiveUrlExtraction) {
   urlsExtractedFromTargets = await extractUrlsRecursively(urlsExtractedFromTargets, userSelected.recursiveUrlExtraction);
-  console.log("\n\nDEBUG2\n\n");
 }
 
 let urlVectors = urlsExtractedFromTargets;
