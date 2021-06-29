@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { extractParametersFromUrl } from "../urls/urls.mjs";
+import { echo } from "../utils/utils.mjs";
 
 const xssTestInjection = async (url, expected) => {
 
@@ -7,7 +8,13 @@ const xssTestInjection = async (url, expected) => {
   requestOptions.headers = {};
   requestOptions.headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36";
 
-  const res = await fetch(url, requestOptions.headers);
+  let res;
+  try {
+    res = await fetch(url, requestOptions.headers);
+  } catch(err) {
+    echo(`${err.message} fetching ${url}`, "warning");
+    return null;
+  }
   const body = await res.text();
   const lines = body.split("\n");
   
