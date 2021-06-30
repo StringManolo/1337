@@ -8,6 +8,7 @@ import {
   removeArrayDuplicates,
   xssScanner,
   openRedirectScanner,
+  openRedirectBruteForceScanner,
   appendToFile
 } from "./modules/modules.mjs";
 
@@ -36,6 +37,10 @@ if (userSelected.filter) {
 
 if (userSelected.saveUrls) {
   appendToFile("./output/urls.txt", urlVectors);
+}
+
+if (userSelected.openRedirectFullScan) {
+  await openRedirectBruteForceScanner(urlVectors);
 }
 
 urlVectors = prepareUrlsForInjection(urlsExtractedFromTargets);

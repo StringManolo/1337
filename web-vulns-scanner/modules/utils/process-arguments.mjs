@@ -48,6 +48,27 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
         cli.openRedirect = true;
       break;
 
+      case "--open-redir-bt":
+      case "--open-redir-bt-scan":
+      case "--open-redir-bt-scanner":
+      case "--open-redir-brute":
+      case "--open-redir-bruteforce":
+      case "--open-redir-bt-scanner":
+      case "--open-redir-brute-force-scan":
+      case "--open-redir-brute-force-scanner":
+      case "--open-redirect-bt":
+      case "--open-redirect-bt-scan":
+      case "--open-redirect-bt-scanner":
+      case "--open-redirect-brute":
+      case "--open-redirect-bruteforce":
+      case "--open-redirect-bruteforce-scan":
+      case "--open-redirect-bt-scanner":
+      case "--open-redirect-brute-force-scan":
+      case "--open-redirect-brute-force-scanner":
+      case "--open-redirect-full-scan":
+        cli.openRedirectFullScan = true;
+      break;
+
       case "--recursive-url-extraction":
         cli.recursiveUrlExtraction = +next;
       break;
@@ -81,17 +102,18 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
       case "-h":
       case "--help":
         echo(`usage: node web-vulns-scanner.mjs [OPTIONS]
--t,--target                       Full url of target
--x,--xss                          Scan XSS
--r,--open-redir                   Scan Open Redirect
--v,--verbose                      Print more information while scanning
--d,--debug                        Print all information while scanning
-  ,--version                      Print current version
+-t,--target                             Full url of target
+-x,--xss                                Scan XSS
+-r,--open-redirect                      Scan Open Redirect
+  ,--open-redirect-bruteforce-scan      Test all sinks
+-v,--verbose                            Print more information while scanning
+-d,--debug                              Print all information while scanning
+  ,--version                            Print current version
 
-  ,--recursive-url-extraction     Deep level
-  ,--show-extracted-urls          Show all urls found
-  ,--filter-urls                  Only use urls that match a pattern
-  ,--save-prepared-urls           Save the exploit urls to files instead of send requests
+  ,--recursive-url-extraction           Deep level
+  ,--show-extracted-urls                Show all urls found
+  ,--filter-urls                        Only use urls that match a pattern
+  ,--save-prepared-urls                 Save the exploit urls to files instead of send requests
 
 example:
 node web-vulns-scanner.mjs --show-extracted-urls -t https://google.es --recursive-url-extraction 1 --filter-urls google --xss --open-redirect --debug`);
