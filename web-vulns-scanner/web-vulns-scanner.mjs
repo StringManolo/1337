@@ -41,7 +41,7 @@ if (userSelected.filter) {
 }
 
 if (userSelected.saveUrls) {
-  appendToFile("./output/urls.txt", urlVectors);
+  appendToFile("./output/urls.txt", urlVectors.join("\n"));
 }
 
 if (userSelected.openRedirectFullScan) {
