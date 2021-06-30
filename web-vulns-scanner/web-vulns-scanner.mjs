@@ -7,6 +7,7 @@ import {
   multidimensionalArrayToUnidimensional,
   removeArrayDuplicates,
   xssScanner,
+  xssBruteForceScanner,
   openRedirectScanner,
   openRedirectBruteForceScanner,
   appendToFile
@@ -42,6 +43,11 @@ if (userSelected.filter) {
 
 if (userSelected.saveUrls) {
   appendToFile("./output/urls.txt", urlVectors.join("\n"));
+}
+
+if (userSelected.xssFullScan) {
+  console.log("FULL")
+  await xssBruteForceScanner(urlVectors);
 }
 
 if (userSelected.openRedirectFullScan) {

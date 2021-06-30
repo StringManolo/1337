@@ -69,6 +69,27 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
         cli.openRedirectFullScan = true;
       break;
 
+      case "--xss-bt":
+      case "--xss-bt-scan":
+      case "--xss-bt-scanner":
+      case "--xss-brute":
+      case "--xss-bruteforce":
+      case "--xss-bt-scanner":
+      case "--xss-brute-force-scan":
+      case "--xss-brute-force-scanner":
+      case "--xss-bt":
+      case "--xss-scan":
+      case "--xss-bt-scanner":
+      case "--xss-brute":
+      case "--xss-bruteforce":
+      case "--xss-bruteforce-scan":
+      case "--xss-bt-scanner":
+      case "--xss-brute-force-scan":
+      case "--xss-brute-force-scanner":
+      case "--xss-full-scan":
+        cli.xssFullScan = true;
+      break;
+
       case "--recursive-url-extraction":
         cli.recursiveUrlExtraction = +next;
       break;
@@ -108,6 +129,7 @@ Full example: node web-vulns-scanner.mjs -t https://google.com --xss --open-redi
         echo(`usage: node web-vulns-scanner.mjs [OPTIONS]
 -t --target                             Full url of target
 -x --xss                                Scan XSS
+   --xss-bruteforce-scan                Test all sinks
 -r --open-redirect                      Scan Open Redirect
    --open-redirect-bruteforce-scan      Test all sinks
 -v --verbose                            Print more information while scanning
