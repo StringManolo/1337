@@ -26,11 +26,16 @@ for (let i in userSelected.target) {
 urlsExtractedFromTargets = multidimensionalArrayToUnidimensional(urlsExtractedFromTargets);
 urlsExtractedFromTargets = removeArrayDuplicates(urlsExtractedFromTargets);
 
+if (userSelected.filter) {
+  urlsExtractedFromTargets = filterUrls(urlsExtractedFromTargets, userSelected.filter);
+}
+
 if (userSelected.recursiveUrlExtraction) {
   urlsExtractedFromTargets = await extractUrlsRecursively(urlsExtractedFromTargets, userSelected.recursiveUrlExtraction);
 }
 
 let urlVectors = urlsExtractedFromTargets;
+
 if (userSelected.filter) {
   urlVectors = filterUrls(urlsExtractedFromTargets, userSelected.filter);
 }
