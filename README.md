@@ -38,3 +38,9 @@ Exploit reflected XSS automatically or generate exploit, payload and server code
 > node  
 > curl  
 > php
+
+#### [web-vulns-scanner](https://github.com/StringManolo/1337/tree/master/web-vulns-scanner)
+![web-vulns-scanner](https://github.com/StringManolo/1337/blob/master/resources/web-vulns-scanner.png)
+Extract urls, parameters and scan reflected XSS and OpenRedirect via GET in 2 modes (work in extracted parameters or bruteforce each extracted url)
+> node
+> node-fetch
